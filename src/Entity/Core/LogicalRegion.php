@@ -2,6 +2,7 @@
 
 namespace App\Entity\Core;
 
+use App\Entity\Core\Paths\LogicalPath;
 use App\Repository\Core\LogicalRegionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -56,9 +57,21 @@ class LogicalRegion implements RegionInterface
      */
     private ?LogicalBiome $biome;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LogicalPath::class, mappedBy="start", orphanRemoval=true)
+     */
+    private ?Collection $startPaths;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LogicalPath::class, mappedBy="destination", orphanRemoval=true)
+     */
+    private ?Collection $arrivedPaths;
+
     public function __construct()
     {
         $this->regionRessources = new ArrayCollection();
+        $this->startPaths = new ArrayCollection();
+        $this->arrivedPaths = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -164,6 +177,66 @@ class LogicalRegion implements RegionInterface
     public function setBiome(?LogicalBiome $biome): self
     {
         $this->biome = $biome;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LogicalPath[]
+     */
+    public function getStartPaths(): Collection
+    {
+        return $this->startPaths;
+    }
+
+    public function addStartPath(LogicalPath $startPath): self
+    {
+        if (!$this->startPaths->contains($startPath)) {
+            $this->startPaths[] = $startPath;
+            $startPath->setStart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStartPath(LogicalPath $startPath): self
+    {
+        if ($this->startPaths->removeElement($startPath)) {
+            // set the owning side to null (unless already changed)
+            if ($startPath->getStart() === $this) {
+                $startPath->setStart(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LogicalPath[]
+     */
+    public function getArrivedPaths(): Collection
+    {
+        return $this->arrivedPaths;
+    }
+
+    public function addArrivedPath(LogicalPath $arrivedPath): self
+    {
+        if (!$this->arrivedPaths->contains($arrivedPath)) {
+            $this->arrivedPaths[] = $arrivedPath;
+            $arrivedPath->setDestination($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArrivedPath(LogicalPath $arrivedPath): self
+    {
+        if ($this->arrivedPaths->removeElement($arrivedPath)) {
+            // set the owning side to null (unless already changed)
+            if ($arrivedPath->getDestination() === $this) {
+                $arrivedPath->setDestination(null);
+            }
+        }
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Entity\Core;
 
 use App\Entity\Core\Buildings\LogicalBuilding;
+use App\Entity\Core\Paths\LogicalPathType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,10 +35,16 @@ class Game
      */
     private $logicalBuildings;
 
+    /**
+     * @ORM\OneToMany(targetEntity=LogicalPathType::class, mappedBy="game", orphanRemoval=true)
+     */
+    private ?Collection $logicalPathTypes;
+
     public function __construct()
     {
         $this->ressources = new ArrayCollection();
         $this->logicalBuildings = new ArrayCollection();
+        $this->logicalPathTypes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,6 +112,36 @@ class Game
             // set the owning side to null (unless already changed)
             if ($logicalBuilding->getGame() === $this) {
                 $logicalBuilding->setGame(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LogicalPathType[]
+     */
+    public function getLogicalPathTypes(): Collection
+    {
+        return $this->logicalPathTypes;
+    }
+
+    public function addLogicalPathType(LogicalPathType $logicalPathType): self
+    {
+        if (!$this->logicalPathTypes->contains($logicalPathType)) {
+            $this->logicalPathTypes[] = $logicalPathType;
+            $logicalPathType->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLogicalPathType(LogicalPathType $logicalPathType): self
+    {
+        if ($this->logicalPathTypes->removeElement($logicalPathType)) {
+            // set the owning side to null (unless already changed)
+            if ($logicalPathType->getGame() === $this) {
+                $logicalPathType->setGame(null);
             }
         }
 
