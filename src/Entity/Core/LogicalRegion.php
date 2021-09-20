@@ -49,7 +49,7 @@ class LogicalRegion implements RegionInterface
     /**
      * @ORM\OneToMany(targetEntity=RegionRessources::class, mappedBy="ManyToOne", orphanRemoval=true)
      */
-    private $regionRessources;
+    private ?Collection $regionRessources;
 
     /**
      * @ORM\ManyToOne(targetEntity=LogicalBiome::class)

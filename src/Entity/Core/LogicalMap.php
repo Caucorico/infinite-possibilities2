@@ -38,7 +38,7 @@ class LogicalMap implements MapInterface
     /**
      * @ORM\OneToMany(targetEntity=LogicalRegion::class, mappedBy="map", orphanRemoval=true)
      */
-    private $logicalRegions;
+    private ?Collection $logicalRegions;
 
     public function __construct()
     {

@@ -18,22 +18,22 @@ class Game
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\ManyToMany(targetEntity=Ressource::class)
      */
-    private $ressources;
+    private ?Collection $ressources;
 
     /**
      * @ORM\OneToMany(targetEntity=LogicalBuilding::class, mappedBy="game", orphanRemoval=true)
      */
-    private $logicalBuildings;
+    private ?Collection $logicalBuildings;
 
     /**
      * @ORM\OneToMany(targetEntity=LogicalPathType::class, mappedBy="game", orphanRemoval=true)
