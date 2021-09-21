@@ -2,6 +2,7 @@
 
 namespace App\Entity\Core\Paths;
 
+use App\Entity\Core\CommonCoreElement;
 use App\Entity\Core\Game;
 use App\Repository\Core\Paths\LogicalPathTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=LogicalPathTypeRepository::class)
  */
-class LogicalPathType
+class LogicalPathType implements CommonCoreElement
 {
     /**
      * @ORM\Id

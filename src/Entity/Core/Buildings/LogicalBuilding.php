@@ -3,6 +3,7 @@
 namespace App\Entity\Core\Buildings;
 
 use App\Entity\Core\Buildings\Core\Buildings\BuildingInterface;
+use App\Entity\Core\CommonCoreElement;
 use App\Entity\Core\Game;
 use App\Repository\Core\Buildings\LogicalBuildingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=LogicalBuildingRepository::class)
  */
-class LogicalBuilding implements BuildingInterface
+class LogicalBuilding implements BuildingInterface, CommonCoreElement
 {
     /**
      * @ORM\Id
