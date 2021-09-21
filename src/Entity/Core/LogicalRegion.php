@@ -3,6 +3,7 @@
 namespace App\Entity\Core;
 
 use App\Entity\Core\Paths\LogicalPath;
+use App\Entity\Core\Regions\LogicalRegionType;
 use App\Repository\Core\LogicalRegionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -29,11 +30,6 @@ class LogicalRegion implements RegionInterface
      * @ORM\Column(type="integer")
      */
     private ?int $y;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private ?int $depth;
 
     /**
      * @ORM\ManyToOne(targetEntity=LogicalMap::class, inversedBy="logicalRegions")
@@ -67,6 +63,12 @@ class LogicalRegion implements RegionInterface
      */
     private ?Collection $arrivedPaths;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=LogicalRegionType::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?LogicalRegionType $logicalRegionType;
+
     public function __construct()
     {
         $this->regionRessources = new ArrayCollection();
@@ -99,18 +101,6 @@ class LogicalRegion implements RegionInterface
     public function setY(int $y): self
     {
         $this->y = $y;
-
-        return $this;
-    }
-
-    public function getDepth(): ?int
-    {
-        return $this->depth;
-    }
-
-    public function setDepth(int $depth): self
-    {
-        $this->depth = $depth;
 
         return $this;
     }
@@ -237,6 +227,18 @@ class LogicalRegion implements RegionInterface
                 $arrivedPath->setDestination(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLogicalRegionType(): ?LogicalRegionType
+    {
+        return $this->logicalRegionType;
+    }
+
+    public function setLogicalRegionType(?LogicalRegionType $logicalRegionType): self
+    {
+        $this->logicalRegionType = $logicalRegionType;
 
         return $this;
     }
